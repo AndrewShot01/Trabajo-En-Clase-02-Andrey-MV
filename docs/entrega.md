@@ -24,7 +24,7 @@ Se clonó el remoto porque la carpeta inicial estaba vacía. La identidad Git se
 
 ## Evidencia Git
 
-Se trabajó en main con commits locales por etapas, sin pull requests ni fusiones. La lista real está disponible con git log --oneline; git status --short --branch y git remote -v muestran el estado y el remoto. No se ha hecho push.
+Se trabajó en main con commits locales por etapas, sin pull requests ni fusiones. La lista real está disponible con git log --oneline; git status --short --branch y git remote -v muestran el estado y el remoto. El estudiante autorizó publicar los commits en GitHub después de revisar la ejecución con PostgreSQL.
 
 ## Conversación y reflexión pendientes del estudiante
 

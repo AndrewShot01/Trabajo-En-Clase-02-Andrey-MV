@@ -139,6 +139,6 @@ dotnet run --project Parqueo -- --verificar-sql
 
 Resultados ejecutados: 37 comprobaciones locales, 28 comprobaciones PostgreSQL, igualdad de los 22 registros SQL/JSON y validación SQL de cantidades, montos, salida nula y restricciones. Las pruebas locales usan copias temporales. Las pruebas remotas insertan claves temporales, comprueban CRUD, las eliminan en `finally` y comparan que los datos iniciales permanecen intactos. Ejecútelas en esta base de clase con los datos de prueba previstos. `sql/verificar.sql` usa rollback y no conserva modificaciones.
 
-La entrega académica aún requiere adjuntar la conversación completa y la reflexión personal del estudiante. El push está pendiente de revisión y autorización expresa.
+La entrega académica aún requiere adjuntar la conversación completa y la reflexión personal del estudiante. El estudiante autorizó publicar los commits en GitHub después de revisar la ejecución con PostgreSQL.
 
 Referencias: [Npgsql EF Core](https://www.npgsql.org/efcore/), [TLS en Azure PostgreSQL](https://learn.microsoft.com/en-us/azure/postgresql/security/security-tls-how-to-connect) y [Secret Manager](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-10.0).
