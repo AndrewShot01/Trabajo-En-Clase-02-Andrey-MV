@@ -1,87 +1,104 @@
 ﻿# Sistema de parqueo
 
-Trabajo en Clase 02 de Programación Avanzada. Aplicación de consola C# sobre .NET 10, EF Core 10.0.13 y SQL Server. Permite ejecutar consultas y CRUD mediante los mismos repositorios sobre SQL Server o tres archivos JSON. El repositorio original contenía solamente `.gitignore`.
+Trabajo en Clase 02 de BSI-19 Programación Avanzada. Consola C# .NET 10, EF Core 10.0.13 y proveedor Npgsql 10.0.3. El motor confirmado por el estudiante es PostgreSQL en Azure, base `advanced_programming`, esquema `user_07`. El repositorio original contenía solamente `.gitignore`.
 
-## Ejecutar y comprobar
+## Ejecutar
 
-Desde la raíz, con el SDK .NET 10:
+Desde la raíz, con SDK .NET 10:
 
 ```powershell
 dotnet restore TrabajoEnClase02.slnx
 dotnet build TrabajoEnClase02.slnx --no-restore
 dotnet run --project Parqueo --no-build
-dotnet run --project Parqueo --no-build -- --pruebas
-dotnet run --project Parqueo -- --datos ./Parqueo/Datos
-powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/verificar-datos.ps1
+dotnet run --project Parqueo --no-build -- --postgres
 ```
 
-La demostración lista ingresos en provincias que contienen `San`, con entrada, salida, minutos, horas y monto. Las pruebas usan copias temporales y no modifican los JSON originales. Su comando devuelve código distinto de cero ante fallos. Para conservar cambios reales, use `--datos ./Parqueo/Datos`: los archivos copiados al directorio de compilación pueden reemplazarse en compilaciones futuras.
+Sin opciones usa los JSON copiados junto al ejecutable; `--postgres` usa la conexión real de Secret Manager. Ambos modos listan ingresos de provincias que contienen `San`, con entrada, salida, minutos, horas y monto. `--sql` se conserva como alias de `--postgres`.
+
+Para persistir modificaciones directamente en los datos fuente, use `--datos ./Parqueo/Datos`. Los archivos del directorio de compilación pueden reemplazarse al compilar.
 
 ## Estructura
 
-- `diseño-bd.sql`: tablas, claves, restricciones e índices.
-- `insertar-registros.sql`: 5 automóviles, 2 parqueos y 15 ingresos (2 abiertos).
-- `Parqueo/Datos`: los mismos registros en JSON, sin propiedades calculadas persistidas.
-- `Parqueo/Modelos`: entidades y clase parcial de cálculos.
-- `Parqueo/ParqueoContext.cs`: mapeo manual equivalente al DDL y fábrica de conexión por secretos.
-- `Parqueo/Repositorios`: interfaces, consultas comunes, validación y almacenes EF/JSON.
-- `Parqueo/Pruebas.cs`: comprobaciones locales ejecutables sin servidor.
-- `scripts/scaffold.ps1`: ingeniería inversa de las tres tablas explícitas.
-- `sql/verificar.sql`: verificaciones preparadas para SQL Server, con rollback.
-- `docs/entrega.md`: estado académico, evidencia y pendientes.
+- `diseño-bd.sql`: DDL PostgreSQL, claves, restricciones e índices.
+- `insertar-registros.sql`: 5 automóviles, 2 parqueos y 15 ingresos, de los cuales 2 no tienen salida.
+- `Parqueo/Datos`: los mismos datos en tres JSON.
+- `Parqueo/Modelos/Generado`: entidades obtenidas mediante scaffold y adaptadas a nombres C# legibles.
+- `Parqueo/Modelos/Entidades.cs`: interfaz y propiedades de clave en parciales.
+- `Parqueo/Modelos/Ingreso.Calculos.cs`: propiedades calculadas que no se sobrescriben al regenerar.
+- `Parqueo/ParqueoContext.cs`: contexto obtenido del esquema real `user_07`.
+- `Parqueo/FabricaContexto.cs`: conexión Npgsql desde secretos locales.
+- `Parqueo/Repositorios`: interfaces, consultas comunes y almacenes EF/JSON con validaciones.
+- `Parqueo/OperacionesBd.cs`: inspección, inicialización transaccional y verificación SQL.
+- `Parqueo/Pruebas.cs` y `PruebasPostgres.cs`: pruebas locales y contra PostgreSQL.
+- `scripts`: scaffold, integración y comparación de datos.
+- `sql/verificar.sql`: verificación de restricciones con rollback.
+- `docs`: resultados y estado de la entrega académica.
 
 ## Modelo y reglas
 
-`PRQAutomoviles(Id, Color, Anio, Fabricante, Tipo)` y `PRQParqueos(Id, Provincia, Nombre, PrecioPorHora)` son los padres de `PRQIngresosAutomoviles(Consecutivo, IdParqueo, IdAutomovil, Entrada, Salida)`. Las claves son enteros positivos asignados por el llamador, sin IDENTITY. No se elimina un padre con ingresos relacionados. Los tipos válidos son `sedán`, `4x4` y `moto`.
+Las tablas son `user_07."PRQAutomoviles"`, `user_07."PRQParqueos"` y `user_07."PRQIngresosAutomoviles"`. Los nombres entre comillas conservan mayúsculas en PostgreSQL. Cada ingreso referencia automóvil y parqueo. Las claves son enteros positivos asignados por el llamador, sin identidad automática. Se impide eliminar padres con ingresos relacionados. Los tipos válidos son `sedán`, `4x4` y `moto`.
 
-Los intervalos de años, precios y fechas incluyen ambos límites. Se filtra por la fecha de entrada completa; para cubrir un día completo el llamador debe proporcionar también su hora final. Las fechas representan hora local del parqueo, sin conversión de zona. Las búsquedas textuales usan subcadenas sin distinguir mayúsculas; en SQL el tratamiento de acentos depende de la intercalación de la base. No hay búsqueda difusa por distancia de edición.
+Los intervalos de años, precios y fechas incluyen ambos límites. Se filtra por la fecha de entrada completa: el llamador debe incluir la hora final deseada. Las fechas usan `timestamp without time zone`, como hora local del parqueo. Las búsquedas textuales usan subcadenas sin distinguir mayúsculas; las pruebas verificaron también provincia con tilde. No hay búsqueda por distancia de edición.
 
-La estadía utiliza ticks y aritmética decimal: minutos / 60 × precio por hora. No se cobra por hora iniciada. Se redondea únicamente el monto final a dos decimales con `MidpointRounding.AwayFromZero`. Si no hay salida, minutos, horas y monto son nulos. El precio se obtiene del parqueo actual; no se guarda una tarifa histórica. `Ingreso.Calculos.cs` mantiene los cálculos separados del modelo persistido.
+La duración utiliza ticks y aritmética decimal. Horas = minutos / 60; monto = horas × tarifa actual del parqueo. Se redondea solo el monto final a dos decimales, con `MidpointRounding.AwayFromZero`. No se cobra por hora iniciada ni se guarda una tarifa histórica. Sin salida, minutos, horas y monto devuelven `null`. Los cálculos son propiedades no persistidas.
 
-## Scripts SQL
+## Conexión y secretos
 
-Con autorización y una base SQL Server seleccionada, ejecute en SSMS, en este orden:
-
-1. `diseño-bd.sql`.
-2. `insertar-registros.sql`.
-3. Opcionalmente `sql/verificar.sql` en una base de pruebas.
-
-No se crea ni se elige una base automáticamente. Los dos primeros scripts se ejecutan una sola vez en una base sin estas tablas/datos: no son scripts de migración ni de reinicio. Usan transacciones y `XACT_ABORT`. No se ejecutaron contra el servidor del profesor.
-
-## Secretos y conexión
-
-Obtenga del profesor servidor, nombre de base, usuario, contraseña y requisitos de conexión. Configure localmente la cadena real, sustituyendo el marcador completo:
+La conexión del estudiante ya se configuró localmente fuera del repositorio. En otro equipo configure el secreto con su cadena real:
 
 ```powershell
-dotnet user-secrets set "ConnectionStrings:Parqueo" "<CADENA_REAL_DEL_PROFESOR>" --project Parqueo
-dotnet run --project Parqueo -- --sql
+dotnet user-secrets set "ConnectionStrings:Parqueo" "<CADENA_REAL>" --project Parqueo
 ```
 
-No coloque la cadena en archivos del repositorio. `UserSecretsId` ya está configurado. Secret Manager es almacenamiento local de desarrollo fuera del repositorio, no un almacén cifrado de producción. La fábrica lee `ConnectionStrings:Parqueo`; sin secreto informa el requisito y termina.
+Formato de referencia, sin contraseña real:
 
-## Scaffold pendiente
+```text
+Host=<SERVIDOR>;Port=5432;Database=advanced_programming;Username=user_07;Password=<CONTRASEÑA>;SSL Mode=VerifyFull;Search Path=user_07
+```
 
-La herramienta local `dotnet-ef` está fijada a 10.0.13. Una vez creadas las tablas reales y confirmada la conexión autorizada:
+Se usa TLS con verificación del servidor. Secret Manager es almacenamiento local de desarrollo fuera de Git, no almacenamiento cifrado de producción. Nunca incluya credenciales en archivos versionados ni registre la cadena. Los comandos no imprimen el secreto.
+
+## Scripts de la base
+
+**Las tres tablas y los datos iniciales ya fueron creados en la base real con autorización del estudiante. No vuelva a ejecutar la creación para reiniciar datos.**
+
+Puede abrir los SQL con la extensión PostgreSQL y confirmar que la conexión activa corresponde a `advanced_programming`, esquema `user_07`. En una instalación inicial sin estas tablas, ejecute primero `diseño-bd.sql` y luego `insertar-registros.sql`. Los scripts no crean ni modifican otros esquemas y no son migraciones idempotentes.
+
+Alternativamente, desde la raíz:
+
+```powershell
+dotnet run --project Parqueo -- --inspeccionar-bd
+dotnet run --project Parqueo -- --inicializar-bd
+```
+
+La inicialización ejecuta ambos scripts en una sola transacción y rechaza la operación si alguna tabla PRQ ya existe. No elimina tablas ni datos existentes.
+
+## Scaffold e integración
+
+El scaffold se ejecutó contra las tres tablas reales de `user_07`. Para repetirlo después de un cambio autorizado en el esquema:
 
 ```powershell
 dotnet tool restore
 powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/scaffold.ps1
+# Revisar los cuatro archivos generados en .artifacts/scaffold antes de integrarlos.
+powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/integrar-scaffold.ps1
 ```
 
-El script lee el secreto local y pasa la conexión en memoria al proceso de EF. No imprima ni registre sus argumentos. Incluye `--table dbo.PRQAutomoviles --table dbo.PRQParqueos --table dbo.PRQIngresosAutomoviles` y `--no-onconfiguring`. No utiliza `--force`. EF no interpreta `PRQ*` como un filtro de prefijo: se enumeran las tres tablas permitidas. El script de PowerShell está preparado para Windows.
+La política se aplica únicamente al proceso invocado. El script lee Secret Manager en Windows y utiliza el proveedor `Npgsql.EntityFrameworkCore.PostgreSQL`. Enumera explícitamente las tres tablas `user_07.PRQAutomoviles`, `user_07.PRQParqueos` y `user_07.PRQIngresosAutomoviles`. No usa `--schema`, comodines ni `--force`. Si ya hay una salida previa en `.artifacts/scaffold`, consérvela o muévala a un respaldo antes de repetir; EF no la sobrescribe.
 
-El resultado se genera separado en `Parqueo/Generado`, con `ParqueoScaffoldContext`. El contexto y entidades actuales fueron escritos a partir del DDL; **no son resultado de un scaffold ejecutado**. Antes de sustituirlos, comparar propiedades, conservar los nombres `Automovil`, `Estacionamiento` e `Ingreso`, adaptar la fábrica y mantener `IRegistro`, `Clave` y propiedades calculadas en parciales separadas. Las entidades generadas usan nombres diferentes y no sustituyen automáticamente las actuales. La integración del scaffold real queda pendiente de acceso al servidor.
+La integración renombra las entidades a `Automovil`, `Estacionamiento` e `Ingreso`, conserva los nombres SQL entre comillas, excluye de la serialización las navegaciones y elimina metadatos de enums ajenos que Npgsql descubre globalmente. Solo integra las tres entidades y su contexto. Mantiene intactos los parciales de claves y cálculos, la fábrica y los repositorios. El script de integración reemplaza los archivos generados: revisar el diff antes de confirmar el commit.
 
-## Usar repositorios
+## Repositorios, consultas y CRUD
 
-Los contratos `IAutomoviles`, `IParqueos` e `IIngresos` no dependen de la fuente. Cambie únicamente el almacén:
+`IAutomoviles`, `IParqueos` e `IIngresos` usan los mismos contratos en ambas fuentes:
 
 ```csharp
+using Parqueo;
 using Parqueo.Modelos;
 using Parqueo.Repositorios;
 
 using IAlmacen datos = new AlmacenJson("./Parqueo/Datos");
-// Alternativa SQL: new AlmacenEf(new FabricaContexto().CreateDbContext([]));
+// Alternativa: new AlmacenEf(new FabricaContexto().CreateDbContext([]));
 IAutomoviles autos = new Automoviles(datos);
 IParqueos parqueos = new Parqueos(datos);
 IIngresos ingresos = new Ingresos(datos);
@@ -97,15 +114,7 @@ var inicio = new DateTime(2026, 10, 1);
 var fin = new DateTime(2026, 10, 31, 23, 59, 59);
 var porTipo = ingresos.PorTipo("sed", inicio, fin);
 var porProvincia = ingresos.PorProvincia("here", inicio, fin);
-```
 
-Ambos listados llaman a `ObtenerPrecioPorHoraPorParqueo` una vez por parqueo distinto y exponen `MontoACancelar`. EF ejecuta filtros y joins en SQL; JSON evalúa las mismas expresiones localmente. No se utiliza `ToList` antes de filtrar las tablas SQL.
-
-## CRUD
-
-Los tres repositorios ofrecen `PorId`, `Insertar`, `Actualizar` y `Borrar`:
-
-```csharp
 autos.Insertar(new Automovil { Id=100, Color="Verde", Anio=2023, Fabricante="Honda", Tipo="moto" });
 var auto = autos.PorId(100)!;
 auto.Color = "Gris";
@@ -113,14 +122,23 @@ autos.Actualizar(auto);
 autos.Borrar(100);
 ```
 
-Para parqueos e ingresos se usa el mismo contrato con `Estacionamiento` e `Ingreso`. Al insertar un ingreso, el automóvil y el parqueo deben existir. Actualizar recibe el registro completo y no permite cambiar su clave. Un `PorId` inexistente devuelve `null`; una búsqueda vacía devuelve una lista vacía. Duplicados, fechas inválidas y parámetros incorrectos lanzan excepciones; actualizar o borrar un registro ausente también falla expresamente.
+Los tres repositorios ofrecen `PorId`, `Insertar`, `Actualizar` y `Borrar`. Actualizar recibe el registro completo con su clave original. Para ingresos deben existir sus padres. Identificadores ausentes devuelven `null` en `PorId`; listas vacías son válidas. Duplicados, parámetros inválidos, relaciones inexistentes y modificaciones de registros ausentes producen errores explícitos.
 
-Cada operación es una unidad de persistencia. EF valida y guarda dentro de una transacción serializable. JSON bloquea el directorio mientras viva el almacén, valida relaciones, escribe y vacía un temporal en el mismo directorio y luego reemplaza el archivo; si falla antes del reemplazo, conserva el original. No existe una transacción de varios comandos del usuario ni de varios archivos. Los almacenes se usan secuencialmente, no desde hilos concurrentes. Dispose libera el bloqueo; un segundo proceso recibe error de acceso. Errores de lectura, JSON inválido o conexión se propagan al llamador y la consola informa el fallo con código de salida 1.
+Los dos listados llaman a `ObtenerPrecioPorHoraPorParqueo` una vez por parqueo distinto y exponen `MontoACancelar`. EF filtra y combina las tablas en PostgreSQL antes de materializarlas. JSON evalúa las mismas expresiones localmente.
 
-## Validación y pendientes
+Cada operación CRUD EF valida y guarda en una transacción serializable. JSON bloquea el directorio durante la sesión, valida relaciones, escribe y vacía un temporal en el mismo directorio y reemplaza el archivo original. Las pruebas comprueban que un fallo de escritura conserva el archivo anterior. No hay transacciones de varios comandos ni de varios JSON. Use cada almacén secuencialmente y libérelo con `Dispose`. Los errores se propagan y la consola devuelve código 1.
 
-La ejecución local completa 37 comprobaciones y el verificador de datos confirma igualdad de los 22 registros SQL/JSON campo por campo. La ejecución local verifica consultas, CRUD de las tres entidades, relaciones, redondeo, límites, salida nula y reapertura. Se verifica además traducción de una consulta a SQL mediante `ToQueryString`, sin conexión: esto no prueba ejecución en SQL Server.
+## Pruebas y evidencia
 
-Pendientes: conexión real, ejecución de DDL e inserciones, scaffold e integración de sus resultados, consultas/CRUD sobre SQL Server y evidencias de esa ejecución. El push requiere revisión y autorización expresa.
+```powershell
+dotnet run --project Parqueo -- --pruebas
+powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/verificar-datos.ps1
+dotnet run --project Parqueo -- --pruebas-bd
+dotnet run --project Parqueo -- --verificar-sql
+```
 
-Referencias consultadas: [Secret Manager de Microsoft](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-10.0) e [ingeniería inversa de EF Core](https://learn.microsoft.com/en-us/ef/core/managing-schemas/scaffolding/).
+Resultados ejecutados: 37 comprobaciones locales, 28 comprobaciones PostgreSQL, igualdad de los 22 registros SQL/JSON y validación SQL de cantidades, montos, salida nula y restricciones. Las pruebas locales usan copias temporales. Las pruebas remotas insertan claves temporales, comprueban CRUD, las eliminan en `finally` y comparan que los datos iniciales permanecen intactos. Ejecútelas en esta base de clase con los datos de prueba previstos. `sql/verificar.sql` usa rollback y no conserva modificaciones.
+
+La entrega académica aún requiere adjuntar la conversación completa y la reflexión personal del estudiante. El push está pendiente de revisión y autorización expresa.
+
+Referencias: [Npgsql EF Core](https://www.npgsql.org/efcore/), [TLS en Azure PostgreSQL](https://learn.microsoft.com/en-us/azure/postgresql/security/security-tls-how-to-connect) y [Secret Manager](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-10.0).

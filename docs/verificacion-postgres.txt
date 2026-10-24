@@ -1,0 +1,30 @@
+﻿OK PostgreSQL: automóviles SQL/JSON
+OK PostgreSQL: parqueos SQL/JSON
+OK PostgreSQL: ingresos SQL/JSON
+OK PostgreSQL: color aproximado
+OK PostgreSQL: intervalo de años
+OK PostgreSQL: fabricante
+OK PostgreSQL: tipo
+OK PostgreSQL: provincia
+OK PostgreSQL: nombre
+OK PostgreSQL: precios
+OK PostgreSQL: listado por tipo y montos
+OK PostgreSQL: listado por provincia y montos
+OK PostgreSQL: monto cerrado y abierto
+OK PostgreSQL: fecha inclusiva exacta
+OK PostgreSQL: CRUD automóvil: insertar y actualizar
+OK PostgreSQL: CRUD parqueo: insertar y actualizar
+OK PostgreSQL: ingreso nuevo abierto
+OK PostgreSQL: CRUD ingreso: actualizar salida y monto
+OK PostgreSQL: protección del automóvil relacionado
+OK PostgreSQL: protección del parqueo relacionado
+OK PostgreSQL: clave duplicada
+OK PostgreSQL: salida inválida
+OK PostgreSQL: actualización inexistente
+OK PostgreSQL: borrado inexistente
+OK PostgreSQL: borrado de las tres entidades de prueba
+OK PostgreSQL: automóviles originales conservados
+OK PostgreSQL: parqueos originales conservados
+OK PostgreSQL: ingresos originales conservados
+28 comprobaciones PostgreSQL correctas; datos de prueba CRUD retirados.
+OK PostgreSQL: verificación SQL de cantidades, monto, salida nula y restricciones; rollback completado.

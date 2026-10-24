@@ -35,5 +35,4 @@ OK limpieza del temporal fallido
 OK JSON inválido informa error
 OK persistencia al reabrir
 OK traducción SQL sin conexión
-37 comprobaciones correctas. SQL Server remoto no probado. Copias de prueba: C:\Users\andre\AppData\Local\Temp\prq-77be75b44d674dc29a527f83de197117
-OK: 22 registros SQL y JSON coinciden en todos sus campos.
+37 comprobaciones correctas. Pruebas locales; la conexión remota se comprueba por separado. Copias de prueba: C:\Users\andre\AppData\Local\Temp\prq-85cffc07bc054bcbac6b6cca01dd077e

@@ -6,36 +6,30 @@ Repositorio: https://github.com/AndrewShot01/Trabajo-En-Clase-02-Andrey-MV
 
 ## Desarrollo y resultados
 
-El repositorio inicial tenía únicamente un .gitignore. Se construyó una solución de consola C# con tres tablas relacionadas, datos equivalentes SQL/JSON, campos calculados, interfaces y repositorios comunes. El README explica la estructura, comandos y decisiones.
+El repositorio inicial contenía únicamente .gitignore. Se creó una solución C# con SQL, JSON, modelos, cálculos, interfaces, repositorios, consultas y CRUD. La solicitud inicial indicaba SQL Server; posteriormente el estudiante confirmó que el servidor del profesor utiliza PostgreSQL y autorizó adaptar el proyecto y crear los objetos en su esquema user_07.
 
-La ejecución local inicial completó 33 comprobaciones: filtros, CRUD, persistencia, integridad, montos y traducción SQL sin conexión. La ejecución final completó 37 comprobaciones, incluida protección ante escritura fallida y JSON inválido. El verificador de datos confirmó los 22 registros SQL/JSON campo por campo. La compilación final tuvo cero errores y cero advertencias; la auditoría NuGet no informó paquetes vulnerables. La ejecución final y sus resultados se registran en docs/verificacion.txt. Los artefactos de prueba se escriben en directorios temporales, sin alterar los datos de entrega.
+Se verificó la conexión TLS a advanced_programming con user_07. La inspección inicial encontró cero tablas en user_07. Se crearon transaccionalmente PRQAutomoviles, PRQParqueos y PRQIngresosAutomoviles y se insertaron 5 automóviles, 2 parqueos y 15 ingresos. No se modificaron otros esquemas.
 
-## Cumplimiento
+Se ejecutó el scaffold real con Npgsql, limitado a las tres tablas de user_07. Sus entidades y contexto quedaron integrados; los cálculos y las claves permanecen en clases parciales independientes. Se excluyeron metadatos de enums ajenos que el proveedor descubre globalmente. No hay credenciales en los archivos versionados.
 
-Implementado y probado localmente: datos JSON, repositorios, consultas, CRUD, cálculos y manejo de casos inválidos. Preparado: DDL SQL Server, inserciones, mapeo EF, lectura de secretos, procedimiento de scaffold y verificación SQL. Pendiente de verificar contra el servidor: scripts, conexión, ingeniería inversa e integración del modelo generado, consultas y CRUD EF. No se afirma que estas pruebas remotas hayan pasado.
+## Cumplimiento y pruebas
 
-## Dificultades
+Implementado y ejecutado: DDL, inserciones, JSON equivalentes, configuración de secreto local, conexión PostgreSQL, scaffold integrado, consultas de ambas fuentes, función ObtenerPrecioPorHoraPorParqueo, cálculos nulos para ingresos abiertos y CRUD de las tres entidades.
 
-La carpeta abierta no era un repositorio; se clonó el remoto indicado. El remoto no contenía código. No había identidad Git; el estudiante proporcionó nombre y correo y se configuraron solamente para este repositorio. La restauración inicial informó una dependencia transitiva vulnerable; se actualizó el paquete criptográfico y se repitió la verificación. No se recibieron credenciales del servidor, por lo que se priorizó una implementación local comprobable.
+Pasaron 37 comprobaciones locales, 28 comprobaciones contra PostgreSQL y la comparación campo por campo de los 22 registros SQL/JSON. También se ejecutó sql/verificar.sql con comprobaciones de cantidades, monto, ingreso abierto e integridad a nivel de base. Los registros temporales del CRUD se eliminaron y se verificó que los datos iniciales permanecieran intactos. Consulte docs/verificacion.txt y docs/verificacion-postgres.txt.
+
+## Dificultades y decisiones
+
+Se clonó el remoto porque la carpeta inicial estaba vacía. La identidad Git se configuró localmente con los datos proporcionados por el estudiante. Se sustituyó el proveedor SQL Server por Npgsql tras confirmar el motor real. Se conservaron las fechas locales en timestamp without time zone y los nombres SQL con mayúsculas mediante comillas. El scaffold renombra sus tipos al integrarse para conservar los contratos de los repositorios.
 
 ## Evidencia Git
 
-Se trabajó en main con commits locales por etapas, sin pull requests ni fusiones. Para obtener la lista real completa:
+Se trabajó en main con commits locales por etapas, sin pull requests ni fusiones. La lista real está disponible con git log --oneline; git status --short --branch y git remote -v muestran el estado y el remoto. No se ha hecho push.
 
-```powershell
-git log --oneline
-git status --short --branch
-git remote -v
-```
+## Conversación y reflexión pendientes del estudiante
 
-No se realizó push. La lista de commits locales se puede usar como evidencia; no se inventaron capturas ni resultados del servidor.
+Resumen, no transcripción literal: se solicitó inspección y plan; se indicó y clonó el repositorio oficial; se autorizó implementar el trabajo; se proporcionó identidad Git; se confirmó posteriormente PostgreSQL y el esquema user_07 y se autorizó crear tablas y datos. El agente implementó y comprobó la solución sobre ambas fuentes.
 
-## Conversación con el agente
+El estudiante debe adjuntar la conversación completa desde la aplicación y completar su reflexión personal. No se inventan capturas ni experiencias del estudiante. El README explica cómo ejecutar, consultar, realizar CRUD y regenerar el modelo.
 
-Este apartado es un resumen, no una transcripción literal. El estudiante solicitó inicialmente solo inspección y un plan. La inspección detectó una carpeta vacía. El estudiante indicó el repositorio oficial, que se clonó y contenía únicamente .gitignore. Posteriormente solicitó realizar el trabajo y suministró la identidad para los commits. El agente implementó los componentes locales y reportó la dependencia pendiente del servidor.
-
-Antes de entregar, el estudiante debe adjuntar la conversación completa desde la aplicación, como solicita el documento del profesor. No se genera una transcripción que omita mensajes aparentando estar completa.
-
-## Conclusiones para completar por el estudiante
-
-La separación entre repositorios y almacenamiento permite reutilizar consultas y probar sin servidor. La validación de relaciones debe conservarse también al persistir JSON. El scaffold real requiere verificar el esquema existente, proteger credenciales y conservar personalizaciones en parciales. El estudiante debe añadir su reflexión personal sobre el aprendizaje y completar las evidencias SQL cuando disponga de conexión.
+Como base para esa reflexión: separar repositorios y almacenamiento permitió probar localmente y contrastar resultados con la base real; los JSON también requieren integridad referencial y escritura consistente; el scaffold debe regenerarse sin perder personalizaciones.
