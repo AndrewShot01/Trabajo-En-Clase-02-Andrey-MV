@@ -1,0 +1,39 @@
+﻿OK bloqueo entre sesiones JSON
+OK cantidades iniciales
+OK color aproximado
+OK fabricante aproximado
+OK tipo aproximado
+OK años inclusivos
+OK provincia aproximada
+OK nombre aproximado
+OK precios inclusivos
+OK ausencias
+OK tarifa por parqueo
+OK cálculos conocidos
+OK salida nula
+OK ingresos por tipo
+OK ingresos por provincia
+OK fecha exacta inclusiva
+OK monto abierto en listado
+OK redondeo a dos decimales
+OK insertar y actualizar automóvil
+OK insertar y actualizar parqueo
+OK insertar y actualizar ingreso
+OK no borrar padre relacionado
+OK no borrar parqueo relacionado
+OK no duplicar clave
+OK clave foránea inválida
+OK salida anterior
+OK rango invertido
+OK texto vacío
+OK tarifa inexistente
+OK actualización inexistente
+OK borrado inexistente
+OK borrar las tres entidades
+OK fallo de escritura conserva original
+OK limpieza del temporal fallido
+OK JSON inválido informa error
+OK persistencia al reabrir
+OK traducción SQL sin conexión
+37 comprobaciones correctas. SQL Server remoto no probado. Copias de prueba: C:\Users\andre\AppData\Local\Temp\prq-77be75b44d674dc29a527f83de197117
+OK: 22 registros SQL y JSON coinciden en todos sus campos.
