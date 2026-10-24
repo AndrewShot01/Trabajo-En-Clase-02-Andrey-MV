@@ -1,13 +1,17 @@
-using Parqueo;
+﻿using Parqueo;
 using Parqueo.Repositorios;
 using System.Text.Json;
 try
 {
+    if (args.Contains("--verificar-sql")) { OperacionesBd.VerificarSql(); return; }
+    if (args.Contains("--inicializar-bd")) { OperacionesBd.Inicializar(); return; }
+    if (args.Contains("--inspeccionar-bd")) { OperacionesBd.Inspeccionar(); return; }
     var indice = Array.IndexOf(args, "--datos");
     if (indice >= 0 && indice + 1 >= args.Length) throw new ArgumentException("Indique la ruta después de --datos.");
     var ruta = indice >= 0 ? args[indice + 1] : Path.Combine(AppContext.BaseDirectory, "Datos");
+    if (args.Contains("--pruebas-bd")) { PruebasPostgres.Ejecutar(ruta); return; }
     if (args.Contains("--pruebas")) { Pruebas.Ejecutar(ruta); return; }
-    using IAlmacen datos = args.Contains("--sql") ? new AlmacenEf(new FabricaContexto().CreateDbContext([])) : new AlmacenJson(ruta);
+    using IAlmacen datos = (args.Contains("--postgres") || args.Contains("--sql")) ? new AlmacenEf(new FabricaContexto().CreateDbContext([])) : new AlmacenJson(ruta);
     var repositorio = new Ingresos(datos);
     var filas = repositorio.PorProvincia("San", DateTime.MinValue, DateTime.MaxValue);
     Console.WriteLine(JsonSerializer.Serialize(filas, new JsonSerializerOptions { WriteIndented = true }));

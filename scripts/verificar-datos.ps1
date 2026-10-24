@@ -5,11 +5,11 @@ $tablas=@{PRQAutomoviles='automoviles';PRQParqueos='parqueos';PRQIngresosAutomov
 $total=0
 foreach($tabla in $tablas.Keys){
  $json=Get-Content -Encoding UTF8 -LiteralPath (Join-Path $raiz "Parqueo/Datos/$($tablas[$tabla]).json") -Raw | ConvertFrom-Json
- $filas=@($sql | Where-Object {$_ -match "^INSERT INTO dbo\.$tabla "})
+ $filas=@($sql | Where-Object {$_ -match ('^INSERT INTO user_07\."'+$tabla+'" ')})
  if($filas.Count -ne $json.Count){throw "Cantidad diferente: $tabla"}
  foreach($fila in $filas){
   if($fila -notmatch '\(([^)]+)\) VALUES \((.+)\);'){throw 'INSERT no reconocido'}
-  $columnas=$Matches[1].Split(',')
+  $columnas=@($Matches[1].Split(',') | ForEach-Object {$_.Trim('"')})
   $valores=@([regex]::Matches($Matches[2],"N?'(?:[^']|'')*'|NULL|[0-9.]+") | ForEach-Object {$_.Value})
   $clave=[int]$valores[0]
   $registro=@($json | Where-Object { $_.($columnas[0]) -eq $clave })

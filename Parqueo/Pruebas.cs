@@ -77,12 +77,12 @@ public static class Pruebas
                 Ver(corrupto, "JSON inválido informa error");
             }
             using (var d = new AlmacenJson(temporal)) Ver(d.Consultar<Ingreso>().Count() == 15 && d.Consultar<Automovil>().Count() == 5, "persistencia al reabrir");
-            using (var ctx = new ParqueoContext(new DbContextOptionsBuilder<ParqueoContext>().UseSqlServer("Server=localhost;Database=SoloTraduccion;Integrated Security=true;TrustServerCertificate=true").Options))
+            using (var ctx = new ParqueoContext(new DbContextOptionsBuilder<ParqueoContext>().UseNpgsql("Host=localhost;Database=SoloTraduccion").Options))
             {
                 var sql = ctx.Ingresos.Where(x => x.Entrada >= new DateTime(2026, 10, 1)).Join(ctx.Automoviles, x => x.IdAutomovil, x => x.Id, (i, a) => new { i, a }).Where(x => x.a.Tipo.ToUpper().Contains("SED")).ToQueryString();
                 Ver(sql.Contains("PRQIngresosAutomoviles") && sql.Contains("JOIN"), "traducción SQL sin conexión");
             }
-            Console.WriteLine($"{total} comprobaciones correctas. SQL Server remoto no probado. Copias de prueba: {temporal}");
+            Console.WriteLine($"{total} comprobaciones correctas. Pruebas locales; la conexión remota se comprueba por separado. Copias de prueba: {temporal}");
         }
         catch { Console.Error.WriteLine("Datos de diagnóstico: " + temporal); throw; }
     }

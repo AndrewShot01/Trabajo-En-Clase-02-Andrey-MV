@@ -11,6 +11,6 @@ try {
  dotnet tool restore
  if ($LASTEXITCODE -ne 0) { throw 'No se pudo restaurar dotnet-ef.' }
  # Lista explícita: --table no admite comodines PRQ*. Sin --force ni credenciales en archivos.
- dotnet ef dbcontext scaffold $conexion Microsoft.EntityFrameworkCore.SqlServer --project Parqueo --table dbo.PRQAutomoviles --table dbo.PRQParqueos --table dbo.PRQIngresosAutomoviles --context ParqueoScaffoldContext --context-dir Generado --output-dir Generado/Entidades --namespace Parqueo.Generado --no-onconfiguring
+ dotnet ef dbcontext scaffold $conexion Npgsql.EntityFrameworkCore.PostgreSQL --project Parqueo --table user_07.PRQAutomoviles --table user_07.PRQParqueos --table user_07.PRQIngresosAutomoviles --context ParqueoScaffoldContext --context-dir ../.artifacts/scaffold --output-dir ../.artifacts/scaffold/Entidades --namespace Parqueo.Generado --no-onconfiguring --use-database-names --no-pluralize
  if ($LASTEXITCODE -ne 0) { throw 'Falló el scaffold; revise conexión y permisos.' }
 } finally { $conexion = $null; Pop-Location }

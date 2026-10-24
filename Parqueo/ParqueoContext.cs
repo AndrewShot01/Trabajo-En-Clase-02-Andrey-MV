@@ -1,38 +1,78 @@
+﻿using Parqueo.Modelos;
+using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
-using Parqueo.Modelos;
+
 namespace Parqueo;
-// Modelo local equivalente al DDL; no se presenta como scaffold ejecutado.
-public class ParqueoContext(DbContextOptions<ParqueoContext> options) : DbContext(options)
+
+public partial class ParqueoContext : DbContext
 {
-    public DbSet<Automovil> Automoviles => Set<Automovil>();
-    public DbSet<Estacionamiento> Parqueos => Set<Estacionamiento>();
-    public DbSet<Ingreso> Ingresos => Set<Ingreso>();
-    protected override void OnModelCreating(ModelBuilder b)
+    public ParqueoContext(DbContextOptions<ParqueoContext> options)
+        : base(options)
     {
-        b.Entity<Automovil>().ToTable("PRQAutomoviles", "dbo").HasKey(x => x.Id);
-        b.Entity<Automovil>().Property(x => x.Id).ValueGeneratedNever();
-        b.Entity<Automovil>().Property(x => x.Color).HasMaxLength(50).IsRequired();
-        b.Entity<Automovil>().Property(x => x.Fabricante).HasMaxLength(80).IsRequired();
-        b.Entity<Automovil>().Property(x => x.Tipo).HasMaxLength(10).IsRequired();
-        b.Entity<Estacionamiento>().ToTable("PRQParqueos", "dbo").HasKey(x => x.Id);
-        b.Entity<Estacionamiento>().Property(x => x.Id).ValueGeneratedNever();
-        b.Entity<Estacionamiento>().Property(x => x.Provincia).HasMaxLength(50).IsRequired();
-        b.Entity<Estacionamiento>().Property(x => x.Nombre).HasMaxLength(100).IsRequired();
-        b.Entity<Estacionamiento>().Property(x => x.PrecioPorHora).HasPrecision(12, 2);
-        b.Entity<Ingreso>().ToTable("PRQIngresosAutomoviles", "dbo").HasKey(x => x.Consecutivo);
-        b.Entity<Ingreso>().Property(x => x.Consecutivo).ValueGeneratedNever();
-        b.Entity<Ingreso>().HasOne<Automovil>().WithMany().HasForeignKey(x => x.IdAutomovil).OnDelete(DeleteBehavior.Restrict);
-        b.Entity<Ingreso>().HasOne<Estacionamiento>().WithMany().HasForeignKey(x => x.IdParqueo).OnDelete(DeleteBehavior.Restrict);
     }
-}
-public class FabricaContexto : IDesignTimeDbContextFactory<ParqueoContext>
-{
-    public ParqueoContext CreateDbContext(string[] args)
+
+    public virtual DbSet<Automovil> Automoviles { get; set; }
+
+    public virtual DbSet<Ingreso> Ingresos { get; set; }
+
+    public virtual DbSet<Estacionamiento> Parqueos { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        var config = new ConfigurationBuilder().AddUserSecrets<FabricaContexto>().Build();
-        var cadena = config.GetConnectionString("Parqueo") ?? throw new InvalidOperationException("Configure el secreto ConnectionStrings:Parqueo.");
-        return new(new DbContextOptionsBuilder<ParqueoContext>().UseSqlServer(cadena).Options);
+        modelBuilder.Entity<Automovil>(entity =>
+                {
+                    entity.HasKey(e => e.Id).HasName("PRQAutomoviles_pkey");
+
+                    entity.ToTable("PRQAutomoviles", "user_07");
+
+                    entity.Property(e => e.Id).ValueGeneratedNever();
+                    entity.Property(e => e.Color).HasMaxLength(50);
+                    entity.Property(e => e.Fabricante).HasMaxLength(80);
+                    entity.Property(e => e.Tipo).HasMaxLength(10);
+                });
+
+        modelBuilder.Entity<Ingreso>(entity =>
+        {
+            entity.HasKey(e => e.Consecutivo).HasName("PRQIngresosAutomoviles_pkey");
+
+            entity.ToTable("PRQIngresosAutomoviles", "user_07");
+
+            entity.HasIndex(e => e.IdAutomovil, "ix_prqingresos_automovil");
+
+            entity.HasIndex(e => e.Entrada, "ix_prqingresos_entrada");
+
+            entity.HasIndex(e => e.IdParqueo, "ix_prqingresos_parqueo");
+
+            entity.Property(e => e.Consecutivo).ValueGeneratedNever();
+            entity.Property(e => e.Entrada).HasColumnType("timestamp without time zone");
+            entity.Property(e => e.Salida).HasColumnType("timestamp without time zone");
+
+            entity.HasOne(d => d.IdAutomovilNavigation).WithMany(p => p.Ingreso)
+                .HasForeignKey(d => d.IdAutomovil)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("PRQIngresosAutomoviles_IdAutomovil_fkey");
+
+            entity.HasOne(d => d.IdParqueoNavigation).WithMany(p => p.Ingreso)
+                .HasForeignKey(d => d.IdParqueo)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("PRQIngresosAutomoviles_IdParqueo_fkey");
+        });
+
+        modelBuilder.Entity<Estacionamiento>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRQParqueos_pkey");
+
+            entity.ToTable("PRQParqueos", "user_07");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Nombre).HasMaxLength(100);
+            entity.Property(e => e.PrecioPorHora).HasPrecision(12, 2);
+            entity.Property(e => e.Provincia).HasMaxLength(50);
+        });
+
+        OnModelCreatingPartial(modelBuilder);
     }
+
+    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }
