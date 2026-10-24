@@ -1,0 +1,14 @@
+﻿[
+    {
+        "Nombre":  "Central",
+        "Id":  1,
+        "Provincia":  "San José",
+        "PrecioPorHora":  1200
+    },
+    {
+        "Nombre":  "Las Flores",
+        "Id":  2,
+        "Provincia":  "Heredia",
+        "PrecioPorHora":  900
+    }
+]

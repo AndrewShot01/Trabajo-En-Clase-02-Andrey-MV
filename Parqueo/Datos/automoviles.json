@@ -1,0 +1,37 @@
+﻿[
+    {
+        "Color":  "Rojo",
+        "Fabricante":  "Toyota",
+        "Id":  1,
+        "Anio":  2020,
+        "Tipo":  "sedán"
+    },
+    {
+        "Color":  "Azul",
+        "Fabricante":  "Suzuki",
+        "Id":  2,
+        "Anio":  2022,
+        "Tipo":  "4x4"
+    },
+    {
+        "Color":  "Negro",
+        "Fabricante":  "Honda",
+        "Id":  3,
+        "Anio":  2019,
+        "Tipo":  "moto"
+    },
+    {
+        "Color":  "Blanco",
+        "Fabricante":  "Nissan",
+        "Id":  4,
+        "Anio":  2024,
+        "Tipo":  "sedán"
+    },
+    {
+        "Color":  "Rojo oscuro",
+        "Fabricante":  "Toyota",
+        "Id":  5,
+        "Anio":  2018,
+        "Tipo":  "4x4"
+    }
+]
