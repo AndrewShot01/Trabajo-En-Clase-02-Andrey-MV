@@ -1,9 +1,10 @@
-using Parqueo.Modelos;
+﻿using Parqueo.Modelos;
 namespace Parqueo.Repositorios;
 
 public class Repositorio<T>(IAlmacen almacen) : IRepositorio<T> where T : class, IRegistro
 {
     protected readonly IAlmacen Datos = almacen;
+    public IReadOnlyList<T> Todos() => Datos.Consultar<T>().OrderBy(Claves.Orden<T>()).ToList();
     public virtual T? PorId(int id)
     {
         if (id <= 0) throw new ArgumentException("La clave debe ser positiva.");
@@ -55,3 +56,4 @@ public sealed class Ingresos(IAlmacen datos) : Repositorio<Ingreso>(datos), IIng
         return resultado;
     }
 }
+

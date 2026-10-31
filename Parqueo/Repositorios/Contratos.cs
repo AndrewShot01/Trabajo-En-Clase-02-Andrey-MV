@@ -1,4 +1,4 @@
-using Parqueo.Modelos;
+﻿using Parqueo.Modelos;
 namespace Parqueo.Repositorios;
 
 public interface IAlmacen : IDisposable
@@ -8,6 +8,7 @@ public interface IAlmacen : IDisposable
 }
 public interface IRepositorio<T> where T : class, IRegistro
 {
+    IReadOnlyList<T> Todos();
     T? PorId(int id);
     void Insertar(T registro);
     void Actualizar(T registro);
@@ -38,3 +39,4 @@ public record DetalleIngreso(Ingreso Ingreso, Automovil Automovil, Estacionamien
     public decimal? DuracionHoras => Ingreso.DuracionHoras;
     public decimal? MontoACancelar => Ingreso.MontoTotal;
 }
+

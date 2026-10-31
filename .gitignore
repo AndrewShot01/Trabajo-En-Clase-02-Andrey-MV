@@ -429,3 +429,6 @@ FodyWeavers.xsd
 
 # Bloqueo local de archivos JSON
 .parqueo.lock
+
+# Persistencia local de la API (trabajo 3)
+.datos-api/
