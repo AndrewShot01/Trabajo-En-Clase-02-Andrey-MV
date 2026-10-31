@@ -1,0 +1,97 @@
+﻿94 solicitudes HTTP verificadas; JSON y PostgreSQL. Datos originales conservados.
+OK JSON GET automoviles -> 200 | Automóviles todos
+OK JSON GET automoviles/1 -> 200 | Automóvil por clave y navegación
+OK JSON GET automoviles/por-color?texto=roj -> 200 | Automóviles por color
+OK JSON GET automoviles/por-anios?desde=2020&hasta=2022 -> 200 | Automóviles por años
+OK JSON GET automoviles/por-fabricante?texto=yot -> 200 | Automóviles por fabricante
+OK JSON GET automoviles/por-tipo?texto=4x -> 200 | Automóviles por tipo
+OK JSON GET parqueos -> 200 | Parqueos todos
+OK JSON GET parqueos/1 -> 200 | Parqueo por clave y navegación
+OK JSON GET parqueos/por-provincia?texto=Jos%C3%A9 -> 200 | Parqueos por provincia
+OK JSON GET parqueos/por-nombre?texto=flor -> 200 | Parqueos por nombre
+OK JSON GET parqueos/por-precios?desde=900&hasta=1200 -> 200 | Parqueos por precio
+OK JSON GET ingresos -> 200 | Ingresos todos
+OK JSON GET ingresos/1 -> 200 | Ingreso cerrado y relaciones
+OK JSON GET ingresos/14 -> 200 | Ingreso abierto y cálculos nulos
+OK JSON GET ingresos/por-tipo?texto=sed&desde=2026-10-01T00:00:00&hasta=2026-10-16T00:00:00 -> 200 | Ingresos por tipo
+OK JSON GET ingresos/por-provincia?texto=here&desde=2026-10-01T00:00:00&hasta=2026-10-16T00:00:00 -> 200 | Ingresos por provincia
+OK JSON GET ingresos/precio-por-hora/1 -> 200 | Precio por hora
+OK JSON GET automoviles/153482467 -> 404 | Precondición clave libre automoviles
+OK JSON GET parqueos/153482467 -> 404 | Precondición clave libre parqueos
+OK JSON GET ingresos/153482467 -> 404 | Precondición clave libre ingresos
+OK JSON POST automoviles -> 201 | Crear automóvil
+OK JSON POST automoviles -> 409 | Clave duplicada
+OK JSON PUT automoviles/153482467 -> 204 | Actualizar automóvil
+OK JSON GET automoviles/153482467 -> 200 | Ver automóvil actualizado
+OK JSON POST parqueos -> 201 | Crear parqueo
+OK JSON PUT parqueos/153482467 -> 204 | Actualizar parqueo
+OK JSON GET parqueos/153482467 -> 200 | Ver parqueo actualizado
+OK JSON POST ingresos -> 201 | Crear ingreso abierto
+OK JSON GET ingresos/153482467 -> 200 | Ver ingreso nuevo
+OK JSON PUT ingresos/153482467 -> 204 | Actualizar salida del ingreso
+OK JSON GET ingresos/153482467 -> 200 | Ver monto del ingreso actualizado
+OK JSON DELETE automoviles/153482467 -> 409 | No borrar automóvil relacionado
+OK JSON DELETE parqueos/153482467 -> 409 | No borrar parqueo relacionado
+OK JSON PUT ingresos/153482467 -> 400 | No aceptar salida anterior
+OK JSON POST ingresos -> 400 | No aceptar relación inexistente
+OK JSON DELETE ingresos/153482467 -> 204 | Borrar ingreso temporal
+OK JSON DELETE automoviles/153482467 -> 204 | Borrar automóvil temporal
+OK JSON DELETE parqueos/153482467 -> 204 | Borrar parqueo temporal
+OK JSON GET ingresos/153482467 -> 404 | Comprobar ingreso borrado
+OK JSON GET automoviles/153482467 -> 404 | Comprobar automóvil borrado
+OK JSON GET parqueos/153482467 -> 404 | Comprobar parqueo borrado
+OK JSON GET automoviles/por-anios?desde=2024&hasta=2020 -> 400 | Rango invertido
+OK JSON POST automoviles -> 400 | Dato inválido de automóvil
+OK JSON PUT automoviles/1 -> 400 | URL y cuerpo con claves diferentes
+OK JSON PUT automoviles/153482467 -> 404 | Actualizar registro inexistente
+OK JSON DELETE parqueos/153482467 -> 404 | Borrar registro inexistente
+OK JSON GET automoviles/por-color -> 400 | Parámetro obligatorio ausente
+OK JSON: datos originales conservados tras las pruebas HTTP.
+OK POSTGRES GET automoviles -> 200 | Automóviles todos
+OK POSTGRES GET automoviles/1 -> 200 | Automóvil por clave y navegación
+OK POSTGRES GET automoviles/por-color?texto=roj -> 200 | Automóviles por color
+OK POSTGRES GET automoviles/por-anios?desde=2020&hasta=2022 -> 200 | Automóviles por años
+OK POSTGRES GET automoviles/por-fabricante?texto=yot -> 200 | Automóviles por fabricante
+OK POSTGRES GET automoviles/por-tipo?texto=4x -> 200 | Automóviles por tipo
+OK POSTGRES GET parqueos -> 200 | Parqueos todos
+OK POSTGRES GET parqueos/1 -> 200 | Parqueo por clave y navegación
+OK POSTGRES GET parqueos/por-provincia?texto=Jos%C3%A9 -> 200 | Parqueos por provincia
+OK POSTGRES GET parqueos/por-nombre?texto=flor -> 200 | Parqueos por nombre
+OK POSTGRES GET parqueos/por-precios?desde=900&hasta=1200 -> 200 | Parqueos por precio
+OK POSTGRES GET ingresos -> 200 | Ingresos todos
+OK POSTGRES GET ingresos/1 -> 200 | Ingreso cerrado y relaciones
+OK POSTGRES GET ingresos/14 -> 200 | Ingreso abierto y cálculos nulos
+OK POSTGRES GET ingresos/por-tipo?texto=sed&desde=2026-10-01T00:00:00&hasta=2026-10-16T00:00:00 -> 200 | Ingresos por tipo
+OK POSTGRES GET ingresos/por-provincia?texto=here&desde=2026-10-01T00:00:00&hasta=2026-10-16T00:00:00 -> 200 | Ingresos por provincia
+OK POSTGRES GET ingresos/precio-por-hora/1 -> 200 | Precio por hora
+OK POSTGRES GET automoviles/124178538 -> 404 | Precondición clave libre automoviles
+OK POSTGRES GET parqueos/124178538 -> 404 | Precondición clave libre parqueos
+OK POSTGRES GET ingresos/124178538 -> 404 | Precondición clave libre ingresos
+OK POSTGRES POST automoviles -> 201 | Crear automóvil
+OK POSTGRES POST automoviles -> 409 | Clave duplicada
+OK POSTGRES PUT automoviles/124178538 -> 204 | Actualizar automóvil
+OK POSTGRES GET automoviles/124178538 -> 200 | Ver automóvil actualizado
+OK POSTGRES POST parqueos -> 201 | Crear parqueo
+OK POSTGRES PUT parqueos/124178538 -> 204 | Actualizar parqueo
+OK POSTGRES GET parqueos/124178538 -> 200 | Ver parqueo actualizado
+OK POSTGRES POST ingresos -> 201 | Crear ingreso abierto
+OK POSTGRES GET ingresos/124178538 -> 200 | Ver ingreso nuevo
+OK POSTGRES PUT ingresos/124178538 -> 204 | Actualizar salida del ingreso
+OK POSTGRES GET ingresos/124178538 -> 200 | Ver monto del ingreso actualizado
+OK POSTGRES DELETE automoviles/124178538 -> 409 | No borrar automóvil relacionado
+OK POSTGRES DELETE parqueos/124178538 -> 409 | No borrar parqueo relacionado
+OK POSTGRES PUT ingresos/124178538 -> 400 | No aceptar salida anterior
+OK POSTGRES POST ingresos -> 400 | No aceptar relación inexistente
+OK POSTGRES DELETE ingresos/124178538 -> 204 | Borrar ingreso temporal
+OK POSTGRES DELETE automoviles/124178538 -> 204 | Borrar automóvil temporal
+OK POSTGRES DELETE parqueos/124178538 -> 204 | Borrar parqueo temporal
+OK POSTGRES GET ingresos/124178538 -> 404 | Comprobar ingreso borrado
+OK POSTGRES GET automoviles/124178538 -> 404 | Comprobar automóvil borrado
+OK POSTGRES GET parqueos/124178538 -> 404 | Comprobar parqueo borrado
+OK POSTGRES GET automoviles/por-anios?desde=2024&hasta=2020 -> 400 | Rango invertido
+OK POSTGRES POST automoviles -> 400 | Dato inválido de automóvil
+OK POSTGRES PUT automoviles/1 -> 400 | URL y cuerpo con claves diferentes
+OK POSTGRES PUT automoviles/124178538 -> 404 | Actualizar registro inexistente
+OK POSTGRES DELETE parqueos/124178538 -> 404 | Borrar registro inexistente
+OK POSTGRES GET automoviles/por-color -> 400 | Parámetro obligatorio ausente
+OK POSTGRES: datos originales conservados tras las pruebas HTTP.

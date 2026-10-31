@@ -39,4 +39,3 @@ public record DetalleIngreso(Ingreso Ingreso, Automovil Automovil, Estacionamien
     public decimal? DuracionHoras => Ingreso.DuracionHoras;
     public decimal? MontoACancelar => Ingreso.MontoTotal;
 }
-

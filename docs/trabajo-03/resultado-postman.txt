@@ -1,0 +1,7 @@
+﻿Ejecución observada en Postman Desktop 12.34.4, el 31 de octubre de 2026.
+Colección: Trabajo en clase 3 — API Parqueo.
+Carpetas: JSON y POSTGRES; 94 solicitudes seleccionadas; una iteración local.
+Runner finalizado: 230 pruebas aprobadas, 0 fallidas, 0 omitidas y 0 errores.
+Duración mostrada: 25 s 720 ms; respuesta promedio: 148 ms.
+Evidencia visual: docs/trabajo-03/postman-runner.jpg.
+Los códigos 400, 404 y 409 de las pruebas negativas fueron los esperados y pasaron sus aserciones.

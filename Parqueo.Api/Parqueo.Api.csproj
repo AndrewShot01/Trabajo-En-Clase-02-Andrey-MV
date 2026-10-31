@@ -11,4 +11,3 @@
   </PropertyGroup>
 
 <ItemGroup><Content Include="../Parqueo/Datos/*.json" Link="DatosIniciales/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" /></ItemGroup></Project>
-

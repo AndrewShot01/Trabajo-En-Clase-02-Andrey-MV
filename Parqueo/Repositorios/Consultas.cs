@@ -56,4 +56,3 @@ public sealed class Ingresos(IAlmacen datos) : Repositorio<Ingreso>(datos), IIng
         return resultado;
     }
 }
-

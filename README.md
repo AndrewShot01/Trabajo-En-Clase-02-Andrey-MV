@@ -142,3 +142,7 @@ Resultados ejecutados: 37 comprobaciones locales, 28 comprobaciones PostgreSQL, 
 La entrega académica aún requiere adjuntar la conversación completa y la reflexión personal del estudiante. El estudiante autorizó publicar los commits en GitHub después de revisar la ejecución con PostgreSQL.
 
 Referencias: [Npgsql EF Core](https://www.npgsql.org/efcore/), [TLS en Azure PostgreSQL](https://learn.microsoft.com/en-us/azure/postgresql/security/security-tls-how-to-connect) y [Secret Manager](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-10.0).
+
+## Trabajo en clase 3 API y Postman
+
+El proyecto Parqueo.Api expone las consultas y el CRUD del parqueo por HTTP. Para iniciarlo: dotnet run --project Parqueo.Api. Consulte la guía paso a paso en [Postman](docs/trabajo-03/POSTMAN.md) e importe postman/Trabajo-03-Parqueo.postman_collection.json. La consola del trabajo 2 continúa funcionando.

@@ -1,6 +1,8 @@
-@Parqueo.Api_HostAddress = http://localhost:5169
+﻿@baseUrl = http://localhost:5080
 
-GET {{Parqueo.Api_HostAddress}}/weatherforecast/
-Accept: application/json
+GET {{baseUrl}}/api/automoviles/1
+X-Fuente-Datos: json
 
 ###
+GET {{baseUrl}}/api/ingresos/1
+X-Fuente-Datos: postgres

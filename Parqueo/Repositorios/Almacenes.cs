@@ -6,10 +6,10 @@ namespace Parqueo.Repositorios;
 
 public static class Claves
 {
-    public static Expression<Func<T,int>> Orden<T>() where T:IRegistro
+    public static Expression<Func<T, int>> Orden<T>() where T : IRegistro
     {
-        var x=Expression.Parameter(typeof(T),"x");
-        return Expression.Lambda<Func<T,int>>(Expression.Property(x,typeof(T)==typeof(Ingreso)?"Consecutivo":"Id"),x);
+        var x = Expression.Parameter(typeof(T), "x");
+        return Expression.Lambda<Func<T, int>>(Expression.Property(x, typeof(T) == typeof(Ingreso) ? "Consecutivo" : "Id"), x);
     }
     public static Expression<Func<T, bool>> Es<T>(int id) where T : IRegistro
     {
@@ -72,4 +72,3 @@ public sealed class AlmacenJson : IAlmacen
     }
     public void Dispose() => bloqueo.Dispose();
 }
-

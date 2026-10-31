@@ -1,0 +1,2757 @@
+﻿{
+  "info": {
+    "name": "Trabajo en clase 3 — API Parqueo",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "API local. Ejecutar las carpetas completas en orden. Cada fuente usa una clave temporal y elimina sus registros al terminar. No contiene credenciales."
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5080"
+    },
+    {
+      "key": "clavePrueba",
+      "value": "190000003"
+    }
+  ],
+  "item": [
+    {
+      "name": "JSON",
+      "item": [
+        {
+          "name": "Automóviles todos",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/automoviles",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));",
+                  "pm.test(\"Cantidad 5\", () => pm.expect(pm.response.json().length).to.eql(5));"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set(\"clavePrueba\", String(100000000+Math.floor(Math.random()*90000000)));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Automóvil por clave y navegación",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/automoviles/1",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));",
+                  "pm.test(\"Contenido y navegación\", () => { const d=pm.response.json(); pm.expect(d.ingresos.length).to.eql(3); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Automóviles por color",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/automoviles/por-color?texto=roj",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));",
+                  "pm.test(\"Cantidad 2\", () => pm.expect(pm.response.json().length).to.eql(2));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Automóviles por años",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/automoviles/por-anios?desde=2020&hasta=2022",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));",
+                  "pm.test(\"Cantidad 2\", () => pm.expect(pm.response.json().length).to.eql(2));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Automóviles por fabricante",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/automoviles/por-fabricante?texto=yot",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));",
+                  "pm.test(\"Cantidad 2\", () => pm.expect(pm.response.json().length).to.eql(2));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Automóviles por tipo",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/automoviles/por-tipo?texto=4x",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));",
+                  "pm.test(\"Cantidad 2\", () => pm.expect(pm.response.json().length).to.eql(2));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Parqueos todos",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/parqueos",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));",
+                  "pm.test(\"Cantidad 2\", () => pm.expect(pm.response.json().length).to.eql(2));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Parqueo por clave y navegación",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/parqueos/1",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));",
+                  "pm.test(\"Contenido y navegación\", () => { const d=pm.response.json(); pm.expect(d.ingresos.length).to.eql(7); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Parqueos por provincia",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/parqueos/por-provincia?texto=Jos%C3%A9",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));",
+                  "pm.test(\"Cantidad 1\", () => pm.expect(pm.response.json().length).to.eql(1));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Parqueos por nombre",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/parqueos/por-nombre?texto=flor",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));",
+                  "pm.test(\"Cantidad 1\", () => pm.expect(pm.response.json().length).to.eql(1));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Parqueos por precio",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/parqueos/por-precios?desde=900&hasta=1200",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));",
+                  "pm.test(\"Cantidad 2\", () => pm.expect(pm.response.json().length).to.eql(2));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ingresos todos",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/ingresos",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));",
+                  "pm.test(\"Cantidad 15\", () => pm.expect(pm.response.json().length).to.eql(15));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ingreso cerrado y relaciones",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/ingresos/1",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));",
+                  "pm.test(\"Contenido y navegación\", () => { const d=pm.response.json(); pm.expect(d.automovil.id).to.eql(d.idAutomovil); pm.expect(d.parqueo.id).to.eql(d.idParqueo); pm.expect(d.duracionMinutos).to.eql(45); pm.expect(d.duracionHoras).to.eql(0.75); pm.expect(d.montoTotal).to.eql(675); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ingreso abierto y cálculos nulos",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/ingresos/14",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));",
+                  "pm.test(\"Contenido y navegación\", () => { const d=pm.response.json(); pm.expect(d.salida).to.eql(null); pm.expect(d.duracionMinutos).to.eql(null); pm.expect(d.duracionHoras).to.eql(null); pm.expect(d.montoTotal).to.eql(null); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ingresos por tipo",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/ingresos/por-tipo?texto=sed&desde=2026-10-01T00:00:00&hasta=2026-10-16T00:00:00",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));",
+                  "pm.test(\"Cantidad 6\", () => pm.expect(pm.response.json().length).to.eql(6));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ingresos por provincia",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/ingresos/por-provincia?texto=here&desde=2026-10-01T00:00:00&hasta=2026-10-16T00:00:00",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));",
+                  "pm.test(\"Cantidad 8\", () => pm.expect(pm.response.json().length).to.eql(8));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Precio por hora",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/ingresos/precio-por-hora/1",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));",
+                  "pm.test(\"Contenido y navegación\", () => { const d=pm.response.json(); pm.expect(d.precioPorHora).to.eql(1200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Precondición clave libre automoviles",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/automoviles/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));",
+                  "if(pm.response.code!==404) { pm.execution.setNextRequest(null); throw new Error(\"Clave ocupada: detener para no alterar registros existentes.\"); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Precondición clave libre parqueos",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/parqueos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));",
+                  "if(pm.response.code!==404) { pm.execution.setNextRequest(null); throw new Error(\"Clave ocupada: detener para no alterar registros existentes.\"); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Precondición clave libre ingresos",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/ingresos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));",
+                  "if(pm.response.code!==404) { pm.execution.setNextRequest(null); throw new Error(\"Clave ocupada: detener para no alterar registros existentes.\"); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Crear automóvil",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/automoviles",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\": {{clavePrueba}}, \"color\": \"Verde\", \"anio\": 2023, \"fabricante\": \"Prueba API TC3\", \"tipo\": \"moto\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Clave duplicada",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/automoviles",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\": {{clavePrueba}}, \"color\": \"Verde\", \"anio\": 2023, \"fabricante\": \"Prueba API TC3\", \"tipo\": \"moto\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 409\", () => pm.response.to.have.status(409));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Actualizar automóvil",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/automoviles/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\": {{clavePrueba}}, \"color\": \"Gris\", \"anio\": 2023, \"fabricante\": \"Prueba API TC3\", \"tipo\": \"moto\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ver automóvil actualizado",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/automoviles/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));",
+                  "pm.test(\"Contenido y navegación\", () => { const d=pm.response.json(); pm.expect(d.color).to.eql(\"Gris\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Crear parqueo",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/parqueos",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\": {{clavePrueba}}, \"provincia\": \"Cartago\", \"nombre\": \"Prueba API TC3\", \"precioPorHora\": 600}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Actualizar parqueo",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/parqueos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\": {{clavePrueba}}, \"provincia\": \"Cartago\", \"nombre\": \"Prueba API TC3\", \"precioPorHora\": 900}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ver parqueo actualizado",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/parqueos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));",
+                  "pm.test(\"Contenido y navegación\", () => { const d=pm.response.json(); pm.expect(d.precioPorHora).to.eql(900); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Crear ingreso abierto",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/ingresos",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"consecutivo\": {{clavePrueba}}, \"idParqueo\": {{clavePrueba}}, \"idAutomovil\": {{clavePrueba}}, \"entrada\": \"2026-10-20T08:00:00\", \"salida\": null}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ver ingreso nuevo",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/ingresos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));",
+                  "pm.test(\"Contenido y navegación\", () => { const d=pm.response.json(); pm.expect(d.montoTotal).to.eql(null); pm.expect(d.automovil.id).to.eql(d.idAutomovil); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Actualizar salida del ingreso",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/ingresos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"consecutivo\": {{clavePrueba}}, \"idParqueo\": {{clavePrueba}}, \"idAutomovil\": {{clavePrueba}}, \"entrada\": \"2026-10-20T08:00:00\", \"salida\": \"2026-10-20T10:00:00\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ver monto del ingreso actualizado",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/ingresos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));",
+                  "pm.test(\"Contenido y navegación\", () => { const d=pm.response.json(); pm.expect(d.montoTotal).to.eql(1800); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "No borrar automóvil relacionado",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/automoviles/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 409\", () => pm.response.to.have.status(409));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "No borrar parqueo relacionado",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/parqueos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 409\", () => pm.response.to.have.status(409));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "No aceptar salida anterior",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/ingresos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"consecutivo\": {{clavePrueba}}, \"idParqueo\": {{clavePrueba}}, \"idAutomovil\": {{clavePrueba}}, \"entrada\": \"2026-10-20T08:00:00\", \"salida\": \"2026-10-20T07:00:00\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "No aceptar relación inexistente",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/ingresos",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"consecutivo\": 2147483646, \"idParqueo\": {{clavePrueba}}, \"idAutomovil\": 2147483647, \"entrada\": \"2026-10-20T08:00:00\", \"salida\": null}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Borrar ingreso temporal",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/ingresos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Borrar automóvil temporal",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/automoviles/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Borrar parqueo temporal",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/parqueos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Comprobar ingreso borrado",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/ingresos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Comprobar automóvil borrado",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/automoviles/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Comprobar parqueo borrado",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/parqueos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Rango invertido",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/automoviles/por-anios?desde=2024&hasta=2020",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Dato inválido de automóvil",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/automoviles",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\": {{clavePrueba}}, \"color\": \"Verde\", \"anio\": 0, \"fabricante\": \"Prueba API TC3\", \"tipo\": \"moto\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "URL y cuerpo con claves diferentes",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/automoviles/1",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\": {{clavePrueba}}, \"color\": \"Verde\", \"anio\": 2023, \"fabricante\": \"Prueba API TC3\", \"tipo\": \"moto\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Actualizar registro inexistente",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/automoviles/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\": {{clavePrueba}}, \"color\": \"Verde\", \"anio\": 2023, \"fabricante\": \"Prueba API TC3\", \"tipo\": \"moto\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Borrar registro inexistente",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/parqueos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Parámetro obligatorio ausente",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/automoviles/por-color",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "json"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"Fuente json\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"json\"));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "POSTGRES",
+      "item": [
+        {
+          "name": "Automóviles todos",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/automoviles",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));",
+                  "pm.test(\"Cantidad 5\", () => pm.expect(pm.response.json().length).to.eql(5));"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set(\"clavePrueba\", String(100000000+Math.floor(Math.random()*90000000)));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Automóvil por clave y navegación",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/automoviles/1",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));",
+                  "pm.test(\"Contenido y navegación\", () => { const d=pm.response.json(); pm.expect(d.ingresos.length).to.eql(3); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Automóviles por color",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/automoviles/por-color?texto=roj",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));",
+                  "pm.test(\"Cantidad 2\", () => pm.expect(pm.response.json().length).to.eql(2));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Automóviles por años",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/automoviles/por-anios?desde=2020&hasta=2022",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));",
+                  "pm.test(\"Cantidad 2\", () => pm.expect(pm.response.json().length).to.eql(2));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Automóviles por fabricante",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/automoviles/por-fabricante?texto=yot",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));",
+                  "pm.test(\"Cantidad 2\", () => pm.expect(pm.response.json().length).to.eql(2));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Automóviles por tipo",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/automoviles/por-tipo?texto=4x",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));",
+                  "pm.test(\"Cantidad 2\", () => pm.expect(pm.response.json().length).to.eql(2));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Parqueos todos",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/parqueos",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));",
+                  "pm.test(\"Cantidad 2\", () => pm.expect(pm.response.json().length).to.eql(2));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Parqueo por clave y navegación",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/parqueos/1",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));",
+                  "pm.test(\"Contenido y navegación\", () => { const d=pm.response.json(); pm.expect(d.ingresos.length).to.eql(7); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Parqueos por provincia",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/parqueos/por-provincia?texto=Jos%C3%A9",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));",
+                  "pm.test(\"Cantidad 1\", () => pm.expect(pm.response.json().length).to.eql(1));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Parqueos por nombre",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/parqueos/por-nombre?texto=flor",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));",
+                  "pm.test(\"Cantidad 1\", () => pm.expect(pm.response.json().length).to.eql(1));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Parqueos por precio",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/parqueos/por-precios?desde=900&hasta=1200",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));",
+                  "pm.test(\"Cantidad 2\", () => pm.expect(pm.response.json().length).to.eql(2));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ingresos todos",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/ingresos",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));",
+                  "pm.test(\"Cantidad 15\", () => pm.expect(pm.response.json().length).to.eql(15));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ingreso cerrado y relaciones",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/ingresos/1",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));",
+                  "pm.test(\"Contenido y navegación\", () => { const d=pm.response.json(); pm.expect(d.automovil.id).to.eql(d.idAutomovil); pm.expect(d.parqueo.id).to.eql(d.idParqueo); pm.expect(d.duracionMinutos).to.eql(45); pm.expect(d.duracionHoras).to.eql(0.75); pm.expect(d.montoTotal).to.eql(675); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ingreso abierto y cálculos nulos",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/ingresos/14",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));",
+                  "pm.test(\"Contenido y navegación\", () => { const d=pm.response.json(); pm.expect(d.salida).to.eql(null); pm.expect(d.duracionMinutos).to.eql(null); pm.expect(d.duracionHoras).to.eql(null); pm.expect(d.montoTotal).to.eql(null); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ingresos por tipo",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/ingresos/por-tipo?texto=sed&desde=2026-10-01T00:00:00&hasta=2026-10-16T00:00:00",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));",
+                  "pm.test(\"Cantidad 6\", () => pm.expect(pm.response.json().length).to.eql(6));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ingresos por provincia",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/ingresos/por-provincia?texto=here&desde=2026-10-01T00:00:00&hasta=2026-10-16T00:00:00",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));",
+                  "pm.test(\"Cantidad 8\", () => pm.expect(pm.response.json().length).to.eql(8));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Precio por hora",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/ingresos/precio-por-hora/1",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));",
+                  "pm.test(\"Contenido y navegación\", () => { const d=pm.response.json(); pm.expect(d.precioPorHora).to.eql(1200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Precondición clave libre automoviles",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/automoviles/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));",
+                  "if(pm.response.code!==404) { pm.execution.setNextRequest(null); throw new Error(\"Clave ocupada: detener para no alterar registros existentes.\"); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Precondición clave libre parqueos",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/parqueos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));",
+                  "if(pm.response.code!==404) { pm.execution.setNextRequest(null); throw new Error(\"Clave ocupada: detener para no alterar registros existentes.\"); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Precondición clave libre ingresos",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/ingresos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));",
+                  "if(pm.response.code!==404) { pm.execution.setNextRequest(null); throw new Error(\"Clave ocupada: detener para no alterar registros existentes.\"); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Crear automóvil",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/automoviles",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\": {{clavePrueba}}, \"color\": \"Verde\", \"anio\": 2023, \"fabricante\": \"Prueba API TC3\", \"tipo\": \"moto\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Clave duplicada",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/automoviles",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\": {{clavePrueba}}, \"color\": \"Verde\", \"anio\": 2023, \"fabricante\": \"Prueba API TC3\", \"tipo\": \"moto\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 409\", () => pm.response.to.have.status(409));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Actualizar automóvil",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/automoviles/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\": {{clavePrueba}}, \"color\": \"Gris\", \"anio\": 2023, \"fabricante\": \"Prueba API TC3\", \"tipo\": \"moto\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ver automóvil actualizado",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/automoviles/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));",
+                  "pm.test(\"Contenido y navegación\", () => { const d=pm.response.json(); pm.expect(d.color).to.eql(\"Gris\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Crear parqueo",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/parqueos",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\": {{clavePrueba}}, \"provincia\": \"Cartago\", \"nombre\": \"Prueba API TC3\", \"precioPorHora\": 600}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Actualizar parqueo",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/parqueos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\": {{clavePrueba}}, \"provincia\": \"Cartago\", \"nombre\": \"Prueba API TC3\", \"precioPorHora\": 900}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ver parqueo actualizado",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/parqueos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));",
+                  "pm.test(\"Contenido y navegación\", () => { const d=pm.response.json(); pm.expect(d.precioPorHora).to.eql(900); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Crear ingreso abierto",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/ingresos",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"consecutivo\": {{clavePrueba}}, \"idParqueo\": {{clavePrueba}}, \"idAutomovil\": {{clavePrueba}}, \"entrada\": \"2026-10-20T08:00:00\", \"salida\": null}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ver ingreso nuevo",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/ingresos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));",
+                  "pm.test(\"Contenido y navegación\", () => { const d=pm.response.json(); pm.expect(d.montoTotal).to.eql(null); pm.expect(d.automovil.id).to.eql(d.idAutomovil); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Actualizar salida del ingreso",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/ingresos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"consecutivo\": {{clavePrueba}}, \"idParqueo\": {{clavePrueba}}, \"idAutomovil\": {{clavePrueba}}, \"entrada\": \"2026-10-20T08:00:00\", \"salida\": \"2026-10-20T10:00:00\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ver monto del ingreso actualizado",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/ingresos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));",
+                  "pm.test(\"Contenido y navegación\", () => { const d=pm.response.json(); pm.expect(d.montoTotal).to.eql(1800); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "No borrar automóvil relacionado",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/automoviles/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 409\", () => pm.response.to.have.status(409));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "No borrar parqueo relacionado",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/parqueos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 409\", () => pm.response.to.have.status(409));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "No aceptar salida anterior",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/ingresos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"consecutivo\": {{clavePrueba}}, \"idParqueo\": {{clavePrueba}}, \"idAutomovil\": {{clavePrueba}}, \"entrada\": \"2026-10-20T08:00:00\", \"salida\": \"2026-10-20T07:00:00\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "No aceptar relación inexistente",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/ingresos",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"consecutivo\": 2147483646, \"idParqueo\": {{clavePrueba}}, \"idAutomovil\": 2147483647, \"entrada\": \"2026-10-20T08:00:00\", \"salida\": null}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Borrar ingreso temporal",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/ingresos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Borrar automóvil temporal",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/automoviles/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Borrar parqueo temporal",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/parqueos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Comprobar ingreso borrado",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/ingresos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Comprobar automóvil borrado",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/automoviles/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Comprobar parqueo borrado",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/parqueos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Rango invertido",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/automoviles/por-anios?desde=2024&hasta=2020",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Dato inválido de automóvil",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/automoviles",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\": {{clavePrueba}}, \"color\": \"Verde\", \"anio\": 0, \"fabricante\": \"Prueba API TC3\", \"tipo\": \"moto\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "URL y cuerpo con claves diferentes",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/automoviles/1",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\": {{clavePrueba}}, \"color\": \"Verde\", \"anio\": 2023, \"fabricante\": \"Prueba API TC3\", \"tipo\": \"moto\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Actualizar registro inexistente",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/automoviles/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\": {{clavePrueba}}, \"color\": \"Verde\", \"anio\": 2023, \"fabricante\": \"Prueba API TC3\", \"tipo\": \"moto\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Borrar registro inexistente",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/parqueos/{{clavePrueba}}",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Parámetro obligatorio ausente",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/automoviles/por-color",
+            "header": [
+              {
+                "key": "X-Fuente-Datos",
+                "value": "postgres"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"Fuente postgres\", () => pm.expect(pm.response.headers.get(\"X-Fuente-Datos\")).to.eql(\"postgres\"));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
