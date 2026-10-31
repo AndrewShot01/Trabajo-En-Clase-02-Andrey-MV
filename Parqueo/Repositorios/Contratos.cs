@@ -29,6 +29,7 @@ public interface IParqueos : IRepositorio<Estacionamiento>
 }
 public interface IIngresos : IRepositorio<Ingreso>
 {
+    IReadOnlyList<Ingreso> PorAutomovil(int id);
     decimal ObtenerPrecioPorHoraPorParqueo(int id);
     IReadOnlyList<DetalleIngreso> PorTipo(string tipo, DateTime desde, DateTime hasta);
     IReadOnlyList<DetalleIngreso> PorProvincia(string provincia, DateTime desde, DateTime hasta);
@@ -39,3 +40,4 @@ public record DetalleIngreso(Ingreso Ingreso, Automovil Automovil, Estacionamien
     public decimal? DuracionHoras => Ingreso.DuracionHoras;
     public decimal? MontoACancelar => Ingreso.MontoTotal;
 }
+

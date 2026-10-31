@@ -36,6 +36,11 @@ public sealed class Parqueos(IAlmacen datos) : Repositorio<Estacionamiento>(dato
 }
 public sealed class Ingresos(IAlmacen datos) : Repositorio<Ingreso>(datos), IIngresos
 {
+    public IReadOnlyList<Ingreso> PorAutomovil(int id)
+    {
+        if(new Automoviles(Datos).PorId(id) is null) throw new KeyNotFoundException("Automóvil inexistente.");
+        return Datos.Consultar<Ingreso>().Where(x=>x.IdAutomovil==id).OrderBy(x=>x.Entrada).ThenBy(x=>x.Consecutivo).ToList();
+    }
     public decimal ObtenerPrecioPorHoraPorParqueo(int id) => new Parqueos(Datos).PorId(id)?.PrecioPorHora ?? throw new KeyNotFoundException("Parqueo inexistente.");
     public override Ingreso? PorId(int id)
     { var i = base.PorId(id); if (i is not null) i.PrecioPorHora = ObtenerPrecioPorHoraPorParqueo(i.IdParqueo); return i; }
@@ -56,3 +61,4 @@ public sealed class Ingresos(IAlmacen datos) : Repositorio<Ingreso>(datos), IIng
         return resultado;
     }
 }
+
