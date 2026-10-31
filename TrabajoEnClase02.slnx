@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="Parqueo.Api/Parqueo.Api.csproj" />
+  <Project Path="Parqueo.Mvc/Parqueo.Mvc.csproj" />
   <Project Path="Parqueo/Parqueo.csproj" />
 </Solution>

@@ -432,3 +432,6 @@ FodyWeavers.xsd
 
 # Persistencia local de la API (trabajo 3)
 .datos-api/
+
+# Bibliotecas de la plantilla MVC que la web no utiliza
+/Parqueo.Mvc/wwwroot/lib/
