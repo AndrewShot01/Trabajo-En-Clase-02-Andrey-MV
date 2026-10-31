@@ -1,0 +1,3 @@
+﻿2 comprobaciones correctas con la API detenida temporalmente.
+Página: mensaje de conexión.
+Panel: HTTP 503 con mensaje para el usuario.

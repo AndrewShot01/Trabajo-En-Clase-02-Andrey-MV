@@ -38,8 +38,8 @@ public sealed class Ingresos(IAlmacen datos) : Repositorio<Ingreso>(datos), IIng
 {
     public IReadOnlyList<Ingreso> PorAutomovil(int id)
     {
-        if(new Automoviles(Datos).PorId(id) is null) throw new KeyNotFoundException("Automóvil inexistente.");
-        return Datos.Consultar<Ingreso>().Where(x=>x.IdAutomovil==id).OrderBy(x=>x.Entrada).ThenBy(x=>x.Consecutivo).ToList();
+        if (new Automoviles(Datos).PorId(id) is null) throw new KeyNotFoundException("Automóvil inexistente.");
+        return Datos.Consultar<Ingreso>().Where(x => x.IdAutomovil == id).OrderBy(x => x.Entrada).ThenBy(x => x.Consecutivo).ToList();
     }
     public decimal ObtenerPrecioPorHoraPorParqueo(int id) => new Parqueos(Datos).PorId(id)?.PrecioPorHora ?? throw new KeyNotFoundException("Parqueo inexistente.");
     public override Ingreso? PorId(int id)
@@ -61,4 +61,3 @@ public sealed class Ingresos(IAlmacen datos) : Repositorio<Ingreso>(datos), IIng
         return resultado;
     }
 }
-

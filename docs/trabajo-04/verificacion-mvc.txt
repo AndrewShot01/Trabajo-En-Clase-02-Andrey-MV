@@ -1,0 +1,75 @@
+﻿74 comprobaciones MVC por HTTP correctas.
+OK MVC 5090 (json/postgres) clave temporal libre
+OK MVC 5090 (json/postgres) lista inicial
+OK MVC 5090 (json/postgres) fuente de mantenimiento visible
+OK MVC 5090 (json/postgres) intervalo inclusivo
+OK MVC 5090 (json/postgres) límite exacto
+OK MVC 5090 (json/postgres) consulta vacía
+OK MVC 5090 (json/postgres) rango invertido
+OK MVC 5090 (json/postgres) parámetro no numérico
+OK MVC 5090 (json/postgres) límite vacío
+OK MVC 5090 (json/postgres) POST sin antifalsificación rechazado
+OK MVC 5090 (json/postgres) crear a través de API
+OK MVC 5090 (json/postgres) escritura solo en fuente configurada
+OK MVC 5090 (json/postgres) detalles y escape HTML
+OK MVC 5090 (json/postgres) no duplicar clave
+OK MVC 5090 (json/postgres) validación servidor sin persistir
+OK MVC 5090 (json/postgres) clave URL/formulario consistente
+OK MVC 5090 (json/postgres) editar a través de API
+OK MVC 5090 (json/postgres) confirmar antes de eliminar
+OK MVC 5090 (json/postgres) vehículo relacionado protegido en pantalla
+OK MVC 5090 (json/postgres) protección al forzar borrado relacionado
+OK MVC 5090 (json/postgres) eliminar a través de API
+OK MVC 5090 (json/postgres) Detalles inexistente
+OK MVC 5090 (json/postgres) Editar inexistente
+OK MVC 5090 (json/postgres) Eliminar inexistente
+OK MVC 5090 (json/postgres) maestro sedán
+OK MVC 5090 (json/postgres) maestro 4x4
+OK MVC 5090 (json/postgres) maestro moto
+OK MVC 5090 (json/postgres) fuente de consulta visible
+OK MVC 5090 (json/postgres) combo no admite tipos inválidos
+OK MVC 5090 (json/postgres) detalle desde API filtrada
+OK MVC 5090 (json/postgres) minutos horas y monto
+OK MVC 5090 (json/postgres) ingreso abierto con nulos
+OK MVC 5090 (json/postgres) maestro inexistente
+OK MVC 5090 (json/postgres) maestro con clave inválida
+OK MVC 5091 (postgres/json) clave temporal libre
+OK MVC 5091 (postgres/json) lista inicial
+OK MVC 5091 (postgres/json) fuente de mantenimiento visible
+OK MVC 5091 (postgres/json) intervalo inclusivo
+OK MVC 5091 (postgres/json) límite exacto
+OK MVC 5091 (postgres/json) consulta vacía
+OK MVC 5091 (postgres/json) rango invertido
+OK MVC 5091 (postgres/json) parámetro no numérico
+OK MVC 5091 (postgres/json) límite vacío
+OK MVC 5091 (postgres/json) POST sin antifalsificación rechazado
+OK MVC 5091 (postgres/json) crear a través de API
+OK MVC 5091 (postgres/json) escritura solo en fuente configurada
+OK MVC 5091 (postgres/json) detalles y escape HTML
+OK MVC 5091 (postgres/json) no duplicar clave
+OK MVC 5091 (postgres/json) validación servidor sin persistir
+OK MVC 5091 (postgres/json) clave URL/formulario consistente
+OK MVC 5091 (postgres/json) editar a través de API
+OK MVC 5091 (postgres/json) confirmar antes de eliminar
+OK MVC 5091 (postgres/json) vehículo relacionado protegido en pantalla
+OK MVC 5091 (postgres/json) protección al forzar borrado relacionado
+OK MVC 5091 (postgres/json) eliminar a través de API
+OK MVC 5091 (postgres/json) Detalles inexistente
+OK MVC 5091 (postgres/json) Editar inexistente
+OK MVC 5091 (postgres/json) Eliminar inexistente
+OK MVC 5091 (postgres/json) maestro sedán
+OK MVC 5091 (postgres/json) maestro 4x4
+OK MVC 5091 (postgres/json) maestro moto
+OK MVC 5091 (postgres/json) fuente de consulta visible
+OK MVC 5091 (postgres/json) combo no admite tipos inválidos
+OK MVC 5091 (postgres/json) detalle desde API filtrada
+OK MVC 5091 (postgres/json) minutos horas y monto
+OK MVC 5091 (postgres/json) ingreso abierto con nulos
+OK MVC 5091 (postgres/json) maestro inexistente
+OK MVC 5091 (postgres/json) maestro con clave inválida
+OK json automoviles: datos originales intactos
+OK json parqueos: datos originales intactos
+OK json ingresos: datos originales intactos
+OK postgres automoviles: datos originales intactos
+OK postgres parqueos: datos originales intactos
+OK postgres ingresos: datos originales intactos

@@ -1,0 +1,8 @@
+﻿Revisión visual ejecutada en Microsoft Edge, 31 de octubre de 2026.
+Lista inicial: 5 vehículos; fuente JSON visible.
+Filtro 2020–2022: 2 vehículos (Toyota 2020 y Suzuki 2022).
+Formulario Nuevo automóvil: campos, combo y botones visibles sin superposición.
+Maestro por tipo sedán: Toyota #1 y Nissan #4; fuente PostgreSQL visible.
+Al seleccionar Nissan #4, el panel inferior cargó sus 3 ingresos con JavaScript sin navegación de página.
+Montos comprobados visualmente: 3.600 y 6.075 colones; estadía abierta con duración y monto pendientes.
+Capturas recortadas para conservar solo la aplicación y excluir pestañas/marcadores del navegador.

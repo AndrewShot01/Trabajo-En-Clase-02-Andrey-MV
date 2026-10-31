@@ -146,3 +146,7 @@ Referencias: [Npgsql EF Core](https://www.npgsql.org/efcore/), [TLS en Azure Pos
 ## Trabajo en clase 3 API y Postman
 
 El proyecto Parqueo.Api expone las consultas y el CRUD del parqueo por HTTP. Para iniciarlo: dotnet run --project Parqueo.Api. Consulte la guía paso a paso en [Postman](docs/trabajo-03/POSTMAN.md) e importe postman/Trabajo-03-Parqueo.postman_collection.json. La consola del trabajo 2 continúa funcionando.
+
+## Trabajo en clase 04 Web MVC
+
+Inicie Parqueo.Api y Parqueo.Mvc en dos terminales y abra http://localhost:5090. La web permite mantener automóviles por intervalo de años y consultar estadías por tipo con JavaScript. Fuentes configurables en Parqueo.Mvc/appsettings.json. Consulte [la guía del trabajo 04](docs/trabajo-04/README.md).
